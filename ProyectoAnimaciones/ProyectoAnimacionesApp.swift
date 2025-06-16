@@ -6,12 +6,23 @@
 //
 
 import SwiftUI
-
 @main
 struct ProyectoAnimacionesApp: App {
+
+    @StateObject var modelData = ModelData() // Crea una única fuente de verdad
+
+
+
     var body: some Scene {
+
         WindowGroup {
+
             ContentView()
+
+                .environmentObject(modelData)
+
         }
+
     }
+
 }

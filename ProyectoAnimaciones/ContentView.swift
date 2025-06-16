@@ -8,19 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
+    // This is the correct way to declare an @EnvironmentObject
+    @EnvironmentObject var modelData: ModelData
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    var body: some View {
+        NavigationView { // Note: NavigationView is deprecated in iOS 16+, consider NavigationStack
+            List {
+                ForEach(modelData.hikes) { hike in
+                    NavigationLink {
+                        HikeView(hike: hike)
+                    } label: {
+                        VStack {
+                            Text("ID: \(hike.id)")
+                                .bold()
+                            Spacer()
+                            Text("Name: \(hike.name)")
+                            Spacer()
+                        }
+                        .padding(5)
+                    }
+                }
+            }
+            .animation(.default, value: modelData.hikes) // Consider more specific animations if needed
+            .navigationTitle("Hikes")
+        }
     }
 }
