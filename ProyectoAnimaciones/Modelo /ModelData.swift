@@ -1,13 +1,8 @@
-//
-//  ModelData.swift
-//  ProyectoAnimaciones
-//
-//  Created by Dnilson Achahuanco on 16/06/25.
-//
 import Foundation
+import Combine // Import Combine for @Published
 
-class ModelData: ObservableObject {
-    @Published var hikes: [Hike] = load("hikeData.json")
+class ModelData: ObservableObject { // Change from @Observable to ObservableObject
+    @Published var hikes: [Hike] = load("hikeData.json") // Use @Published
 }
 
 func load<T: Decodable>(_ filename: String) -> T {

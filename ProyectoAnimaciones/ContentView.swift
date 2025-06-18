@@ -1,36 +1,40 @@
-//
-//  ContentView.swift
-//  ProyectoAnimaciones
-//
-//  Created by Dnilson Achahuanco on 16/06/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
-    // This is the correct way to declare an @EnvironmentObject
+    // Change @Environment(ModelData.self) to @EnvironmentObject var modelData: ModelData
     @EnvironmentObject var modelData: ModelData
-
+    
     var body: some View {
-        NavigationView { // Note: NavigationView is deprecated in iOS 16+, consider NavigationStack
-            List {
-                ForEach(modelData.hikes) { hike in
-                    NavigationLink {
-                        HikeView(hike: hike)
-                    } label: {
-                        VStack {
-                            Text("ID: \(hike.id)")
-                                .bold()
-                            Spacer()
-                            Text("Name: \(hike.name)")
-                            Spacer()
+        // NavigationSplitView is available from iOS 16, which Xcode 14.2 supports.
+        // If you encounter issues, you might need to use NavigationView.
+        NavigationSplitView {
+            List(modelData.hikes) { hike in
+                NavigationLink {
+                    HikeView(hike: hike)
+                } label: {
+                    HStack {
+                        
+                        VStack(alignment: .leading) {
+                            Text(hike.name)
+                                .font(.headline)
+                            Text(hike.distanceText)
                         }
-                        .padding(5)
+                        
+                        Spacer()
                     }
                 }
             }
-            .animation(.default, value: modelData.hikes) // Consider more specific animations if needed
             .navigationTitle("Hikes")
+        } detail: {
+            Text("Select a Hike")
         }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+            // Change .environment(ModelData()) to .environmentObject(ModelData())
+            .environmentObject(ModelData())
     }
 }
